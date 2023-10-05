@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./style.css";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
+import { MdClear } from "react-icons/md";
 
 function DropdownMenu({
   title,
@@ -11,20 +12,25 @@ function DropdownMenu({
 }) {
   const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false);
   const ref = useRef();
-  const lengthLimit = 10;
+  const lengthLimit = 24;
 
+  // Truncate the displayed selected options if it is too long
   const truncatedSelection = () => {
     var res = [];
-    selectedOptions.sort();
     for (let i = 0; i < selectedOptions.length; i++) {
       if ([...res, selectedOptions[i]].toString().length < lengthLimit) {
         res = [...res, selectedOptions[i]];
       } else {
-        res = [...res, "..."];
         break;
       }
     }
-    return res;
+    if (res.length == 0 && selectedOptions.length != 0) {
+      return selectedOptions[0].toString().slice(0, lengthLimit) + "...";
+    } else {
+      return (
+        res.toString() + (res.length < selectedOptions.length ? ",..." : "")
+      );
+    }
   };
 
   // Open and close the menu
@@ -55,6 +61,10 @@ function DropdownMenu({
     }
   };
 
+  const clearSelectedOptions = () => {
+    setSelectedOptions([]);
+  };
+
   useEffect(() => {
     // add listener to capture click event
     document.addEventListener("click", handleClickOutside);
@@ -74,11 +84,16 @@ function DropdownMenu({
           type="text"
           onClick={toggleDropdown}
           placeholder="---"
-          // value={truncatedSelection()}
-          value={selectedOptions}
+          value={truncatedSelection()}
           readOnly={true}
           className="select-input"
         />
+
+        {/* If it is multiple selection and there are selected options, add a button to reset selection */}
+        {selectedOptions.length > 0 && isMultipleSelect ? (
+          <MdClear onClick={clearSelectedOptions} className="select-clear" />
+        ) : null}
+
         {isDropdownMenuOpen ? (
           <HiChevronUp className="select-icon" />
         ) : (

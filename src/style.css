@@ -3,17 +3,20 @@
   align-items: center;
 
   .title {
-    display: inline-block;
+    /* display: block; */
+    /* display: inline-block; */
     padding-right: 8px;
     font-size: 16px;
   }
 
   .select {
     position: relative;
+    /* display: inline-block; */
     .select-input {
       width: 200px;
       height: 30px;
       font-size: 14px;
+      /* display: inline-block; */
     }
 
     .select-icon {
@@ -24,6 +27,13 @@
       cursor: pointer;
     }
 
+    .select-clear {
+      position: absolute;
+      top: 6px;
+      cursor: pointer;
+      margin: 4px;
+    }
+
     .dropdown-options {
       width: 208px;
       box-sizing: border-box;
@@ -32,15 +42,14 @@
       right: 0;
       color: rgba(0, 0, 0, 0.65);
       font-size: 14px;
-      /* background-color: #fff; */
-      /* background-image: none; */
+      background-color: #fff;
       border: 1px solid #d9d9d9;
       border-radius: 4px;
       cursor: pointer;
       transition: 0.35s;
       opacity: 1;
       box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
-      z-index: 100;
+      z-index: 9999;
       max-height: 200px;
       overflow-y: auto;
       .dropdown-item {
@@ -48,6 +57,9 @@
         line-height: 20px;
         padding: 8px;
         align-items: center;
+        .checkbox{
+          margin: 4px 8px 4px 4px;
+        }
         &:hover {
           background: #d9e6fd;
         }
