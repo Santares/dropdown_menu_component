@@ -3,20 +3,16 @@
   align-items: center;
 
   .title {
-    /* display: block; */
-    /* display: inline-block; */
     padding-right: 8px;
     font-size: 16px;
   }
 
   .select {
     position: relative;
-    /* display: inline-block; */
     .select-input {
       width: 200px;
       height: 30px;
       font-size: 14px;
-      /* display: inline-block; */
     }
 
     .select-icon {
@@ -38,7 +34,6 @@
       width: 208px;
       box-sizing: border-box;
       position: absolute;
-      /* top: 36px; */
       right: 0;
       color: rgba(0, 0, 0, 0.65);
       font-size: 14px;
@@ -52,10 +47,10 @@
       z-index: 9999;
       max-height: 200px;
       overflow-y: auto;
+      text-wrap: nowrap;
       .dropdown-item {
         display: flex;
-        line-height: 20px;
-        padding: 8px;
+        padding: 4px;
         align-items: center;
         .checkbox{
           margin: 4px 8px 4px 4px;

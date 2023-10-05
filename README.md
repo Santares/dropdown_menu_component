@@ -6,12 +6,12 @@ This is a reusable dropdown menu component written by React without using the pr
 
 ## Functionality
 
-* The user can open and close the dropdown menu by clicking the input field. The user can also close the menu when it is opened by clicking anywhere outside the menu
-* The component supports a single selected option or multiple selected options
+* The user can open and close the dropdown menu by clicking the input field. The user can also close the menu when it is opened by clicking anywhere outside the menu.
+* The component supports a single selected option or multiple selected options.
 * If it is multiple selection, a user can select and deselect all options at once.
-* If it is multiple selection and the user has selected some options, there will be a button on the right of the input field to clear the selection.
-* If it is single selection, there will be an option `None` to deselect.
+* If the user has selected some options, there will be a button on the right of the input field to clear the selection.
 * The selected option or options will be displayed in the input field when the dropdown is closed. It will be truncated if it is too long to display.
+* This component uses `FixedSizeList` from `react-window` to improve efficiency.
 
 ## Usage
 

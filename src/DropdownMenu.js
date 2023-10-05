@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { FixedSizeList as List } from "react-window";
 import "./style.css";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { MdClear } from "react-icons/md";
@@ -38,7 +39,7 @@ function DropdownMenu({
     setIsDropdownMenuOpen(!isDropdownMenuOpen);
   };
 
-  const handleSelectOption = (option) => {
+  const handleSelectOption = (option, event) => {
     if (isMultipleSelect) {
       // If the option is selected, remove it from selected options
       if (selectedOptions.includes(option)) {
@@ -52,6 +53,7 @@ function DropdownMenu({
       setSelectedOptions([option]);
       setIsDropdownMenuOpen(false);
     }
+    event.stopPropagation();
   };
 
   // If the menu is open and the user click anyplace outside the menu, close the menu
@@ -65,6 +67,26 @@ function DropdownMenu({
     setSelectedOptions([]);
   };
 
+  const MenuRow = ({ index, style }) => (
+    <div
+      className={"dropdown-item"}
+      onClick={(e) => handleSelectOption(options[index], e)}
+      style={style}
+    >
+      {/* If is multiple selection, add a checkbox to indicate selection */}
+      {isMultipleSelect ? (
+        <input
+          type="checkbox"
+          className="checkbox"
+          checked={selectedOptions.includes(options[index])}
+          readOnly
+          id={index}
+        />
+      ) : null}
+      {options[index]}
+    </div>
+  );
+
   useEffect(() => {
     // add listener to capture click event
     document.addEventListener("click", handleClickOutside);
@@ -77,7 +99,7 @@ function DropdownMenu({
 
   return (
     <div className="dropdown-menu" ref={ref}>
-      {title && <label className="title">{title}:</label>}
+      {title ? <div className="title">{title}:</div> : null}
 
       <div className="select">
         <input
@@ -89,8 +111,8 @@ function DropdownMenu({
           className="select-input"
         />
 
-        {/* If it is multiple selection and there are selected options, add a button to reset selection */}
-        {selectedOptions.length > 0 && isMultipleSelect ? (
+        {/* If there are selected options, add a button to reset selection */}
+        {selectedOptions.length > 0 ? (
           <MdClear onClick={clearSelectedOptions} className="select-clear" />
         ) : null}
 
@@ -99,42 +121,20 @@ function DropdownMenu({
         ) : (
           <HiChevronDown className="select-icon" />
         )}
-
-        {isDropdownMenuOpen ? (
-          <div className="dropdown-options">
-            {/* If is single selection, use default option to deselect */}
-            {!isMultipleSelect ? (
-              <div
-                className={"dropdown-item"}
-                onClick={() => {
-                  setSelectedOptions([]);
-                  setIsDropdownMenuOpen(false);
-                }}
-                style={{ fontStyle: "italic" }}
+        {isDropdownMenuOpen && (
+          <div className="dropdown">
+            <div className="dropdown-options">
+              <List
+                height={200}
+                itemCount={options.length}
+                itemSize={30}
+                width={250}
               >
-                None
-              </div>
-            ) : null}
-            {options.map((option, index) => (
-              <div
-                key={index}
-                className={"dropdown-item"}
-                onClick={() => handleSelectOption(option)}
-              >
-                {/* If is multiple selection, add a checkbox to indicate selection */}
-                {isMultipleSelect ? (
-                  <input
-                    type="checkbox"
-                    className="checkbox"
-                    checked={selectedOptions.includes(option)}
-                    readOnly
-                  />
-                ) : null}
-                {option}
-              </div>
-            ))}
+                {MenuRow}
+              </List>
+            </div>
           </div>
-        ) : null}
+        )}
       </div>
     </div>
   );
